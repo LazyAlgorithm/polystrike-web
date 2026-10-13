@@ -31,7 +31,14 @@ html, body {
 }
 /* The game draws into this; SDL follows its CSS size. */
 #canvas {
-	position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh;
+	/* Keep the interactive game viewport inside notches and home-indicator areas.
+	   SDL follows the canvas CSS box, while the renderer chooses its own pixel density. */
+	position: fixed;
+	left: env(safe-area-inset-left, 0px);
+	right: env(safe-area-inset-right, 0px);
+	top: env(safe-area-inset-top, 0px);
+	bottom: env(safe-area-inset-bottom, 0px);
+	width: auto; height: auto;
 	display: block; border: 0; outline: none; touch-action: none;
 	background: #000;
 }
