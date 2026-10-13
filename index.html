@@ -83,6 +83,9 @@ html, body {
 	const status = document.getElementById("status");
 	const canvas = document.getElementById("canvas");
 	const PACK = "game.tpak";
+	// Each scene's own assets, in packs fetched after the game has started (smallest first). The game asks for the
+	// one it needs next (AssetPack.Request) and mounts each as it arrives.
+	const LATER_PACKS = ["scene-foundry.tpak", "scene-sanctum.tpak", "scene-freshmart.tpak", "scene-depot9.tpak"];
 	const SAVE_FOLDER = "/libsdl";
 	const ua = navigator.userAgent || "";
 	const iPhone = /iPhone|iPod/.test(ua);
@@ -157,9 +160,14 @@ html, body {
 				if (data) FS.writeFile("/" + PACK, new Uint8Array(data));
 				show("Starting", 0.97);
 				removeRunDependency("tessera-files");
+				fetchLater();
 			}).catch((error) => fail(error.message));
 		}],
 		tesseraPersist: persist,
+		tesseraRequestPack: (name) => {
+			const at = laterQueue.indexOf(name);
+			if (at > 0) { laterQueue.splice(at, 1); laterQueue.unshift(name); }
+		},
 		tesseraReady: () => {
 			show("Tap to play", 1);
 			gate.classList.add("ready");
@@ -170,6 +178,22 @@ html, body {
 	setInterval(persist, 5000);
 	addEventListener("pagehide", persist);
 	document.addEventListener("visibilitychange", () => { if (document.hidden) persist(); });
+
+	// Scene packs, one at a time in the background. Each is written whole, under its own name, once it is complete,
+	// so the game never sees half a pack. A failed download is tried again a little later.
+	const laterQueue = Array.isArray(LATER_PACKS) ? LATER_PACKS.slice() : [];
+	const fetchLater = () => {
+		const name = laterQueue[0];
+		if (!name) return;
+		fetch(name).then((response) => {
+			if (!response.ok) throw new Error(response.status);
+			return response.arrayBuffer();
+		}).then((data) => {
+			FS.writeFile("/" + name, new Uint8Array(data));
+			laterQueue.splice(laterQueue.indexOf(name), 1);
+			fetchLater();
+		}).catch(() => setTimeout(fetchLater, 3000));
+	};
 
 	// The browser lets a page play sound and fill the screen only after a tap or click.
 	const play = () => {
