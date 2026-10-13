@@ -185,6 +185,17 @@ html, body {
 		},
 		onAbort: (what) => fail("The game stopped: " + what + ". Reload the page to try again."),
 	};
+	// The game must follow the canvas's size exactly, or its picture is stretched to fit. The browser's resize event
+	// can come before a turned phone has settled the canvas's new box (safe areas, toolbars), so whenever the box
+	// changes for any reason SDL is told to measure it again, on the next frame.
+	if (window.ResizeObserver) {
+		let pending = false;
+		new ResizeObserver(() => {
+			if (pending) return;
+			pending = true;
+			requestAnimationFrame(() => { pending = false; window.dispatchEvent(new Event("resize")); });
+		}).observe(canvas);
+	}
 	setInterval(persist, 5000);
 	addEventListener("pagehide", persist);
 	document.addEventListener("visibilitychange", () => { if (document.hidden) persist(); });
