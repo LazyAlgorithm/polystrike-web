@@ -89,6 +89,7 @@ html, body {
 	const fill = document.getElementById("fill");
 	const status = document.getElementById("status");
 	const canvas = document.getElementById("canvas");
+	const DEV_BUILD_ID = "95358ed1de88";
 	const PACK = "game.tpak";
 	// Each scene's own assets, in packs fetched after the game has started (smallest first). The game asks for the
 	// one it needs next (AssetPack.Request) and mounts each as it arrives.
@@ -154,6 +155,7 @@ html, body {
 
 	window.Module = {
 		canvas,
+		locateFile: (name) => name + "?v=" + DEV_BUILD_ID,
 		// The same switches as the desktop game, from the address: ?arg=--host&arg=--bots&arg=3 (for testing).
 		arguments: new URLSearchParams(location.search).getAll("arg"),
 		print: (text) => console.log(text),
@@ -216,7 +218,7 @@ html, body {
 	gate.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") play(); });
 
 	const script = document.createElement("script");
-	script.src = "Ringfall.js";
+	script.src = "Ringfall.js?v=95358ed1de88";
 	script.onerror = () => fail("The game could not be loaded. Check your connection and reload the page.");
 	document.body.appendChild(script);
 })();
