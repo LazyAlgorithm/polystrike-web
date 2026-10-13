@@ -92,7 +92,7 @@ html, body {
 	const fill = document.getElementById("fill");
 	const status = document.getElementById("status");
 	const canvas = document.getElementById("canvas");
-	const DEV_BUILD_ID = "8624651af995";
+	const DEV_BUILD_ID = "6d496f8b7fa8";
 	const PACK = "game.tpak";
 	// Each scene's own assets, in packs fetched after the game has started (smallest first). The game asks for the
 	// one it needs next (AssetPack.Request) and mounts each as it arrives.
@@ -232,7 +232,7 @@ html, body {
 	gate.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") play(); });
 
 	const script = document.createElement("script");
-	script.src = "Ringfall.js?v=8624651af995";
+	script.src = "Ringfall.js?v=6d496f8b7fa8";
 	script.onerror = () => fail("The game could not be loaded. Check your connection and reload the page.");
 	document.body.appendChild(script);
 })();
