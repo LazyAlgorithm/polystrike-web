@@ -32,13 +32,16 @@ html, body {
 /* The game draws into this; SDL follows its CSS size. */
 #canvas {
 	/* Keep the interactive game viewport inside notches and home-indicator areas.
-	   SDL follows the canvas CSS box, while the renderer chooses its own pixel density. */
+	   SDL follows the canvas CSS box, while the renderer chooses its own pixel density.
+	   The size must be explicit: a canvas is a replaced element, so width/height auto with left/right/top/bottom
+	   does not stretch it but takes its pixel size instead. SDL then sees no CSS size of its own and makes the
+	   window its default 1600x900, which overflows a phone's screen. */
 	position: fixed;
 	left: env(safe-area-inset-left, 0px);
-	right: env(safe-area-inset-right, 0px);
 	top: env(safe-area-inset-top, 0px);
-	bottom: env(safe-area-inset-bottom, 0px);
-	width: auto; height: auto;
+	width: calc(100vw - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+	height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+	height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
 	display: block; border: 0; outline: none; touch-action: none;
 	background: #000;
 }
