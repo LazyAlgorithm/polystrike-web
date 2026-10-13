@@ -88,6 +88,10 @@ html, body {
 	const iPhone = /iPhone|iPod/.test(ua);
 	const touch = (navigator.maxTouchPoints || 0) > 0;
 	const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+	// Phones have three or more screen pixels to each of the page's. The game draws its interface at up to two (sharp
+	// enough to read, and half the work of three) and its 3D scene at less still (Gfx.UseMobileQuality).
+	if (touch && (window.devicePixelRatio || 1) > 2)
+		Object.defineProperty(window, "devicePixelRatio", { get: () => 2, configurable: true });
 
 	const show = (text, fraction) => {
 		status.textContent = text;
