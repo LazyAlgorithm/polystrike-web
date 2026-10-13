@@ -1,0 +1,10 @@
+{
+  "name": "Ringfall",
+  "short_name": "Ringfall",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0E1A24",
+  "theme_color": "#0E1A24",
+  "icons": [{ "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }]
+}
