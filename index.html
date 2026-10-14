@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Ringfall</title>
+<title>Polystrike</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
@@ -80,7 +80,7 @@ html, body {
 <div id="gate" role="button" tabindex="0" aria-live="polite">
 	<div class="plate">
 		<img src="icon.png" alt="" onerror="this.remove()">
-		<h1>Ringfall</h1>
+		<h1>Polystrike</h1>
 		<div class="bar"><i id="fill"></i></div>
 		<p id="status">Loading</p>
 		<p class="hint" id="hint">For full screen, use your browser's Share menu and choose Add to Home Screen.</p>
@@ -230,7 +230,7 @@ html, body {
 	gate.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") play(); });
 
 	const script = document.createElement("script");
-	script.src = "Ringfall.js";
+	script.src = "Polystrike.js";
 	script.onerror = () => fail("The game could not be loaded. Check your connection and reload the page.");
 	document.body.appendChild(script);
 })();
